@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
+
 import { StoreController } from './store.controller';
-import { StoreService } from './store.service';
+import { StoreRepository } from './store.repository';
+import { StoreUsecases } from './store.usecases';
+
+import {UserModule} from '~/user/user.module';
+import {NotifModule} from '~/notifications/notif.module';
 
 @Module({
   controllers: [StoreController],
-  providers: [StoreService]
+  providers: [StoreRepository, StoreUsecases],
+  imports: [UserModule, NotifModule]
 })
 export class StoreModule {}

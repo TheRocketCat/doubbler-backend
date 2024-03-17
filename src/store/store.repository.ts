@@ -17,7 +17,7 @@ export class Offer{
 }
 
 @Injectable()
-export class StoreService {
+export class StoreRepository {
 	private _offers:Offer[] = [
 		new Offer("1", "t-shirt", 300),
 		new Offer("2", "Uber", 900),
