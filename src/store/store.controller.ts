@@ -1,4 +1,4 @@
-import { Controller,Get,Post,Body,UseGuards } from '@nestjs/common';
+import { Controller,Get,Post,Body,UseGuards,Param } from '@nestjs/common';
 
 import { StoreRepository } from './store.repository';
 import { StoreUsecases } from './store.usecases';
@@ -18,6 +18,15 @@ export class StoreController {
 	@Get("offers")
 	getOffers(){
 		return this.storeRep.getOffers();
+	}
+
+	@UseGuards(AuthGuard)
+	@Post("buy/:offerId")
+	buyOffer(@Param("offerId") offerId: string){
+		//@ts-ignore
+		const userId=this.req.user.sub;
+
+		return this.storeUC.buyOffer(userId,offerId);
 	}
 
 	@Post("kwikk-payment-hook")

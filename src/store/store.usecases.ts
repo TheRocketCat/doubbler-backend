@@ -23,4 +23,21 @@ export class StoreUsecases {
 			this.notifService.sendOneTimeCode(dto.phoneNumber);
 		}
 	}
+
+	async buyOffer(userId:string,offerId: string) {
+		const offer = await this.storeRep.getOfferById(offerId);
+		if(!offer){
+			throw new Error("Offer not found");
+		}
+		const user= await this.userRep.getUserById(userId);
+
+		if(user.doubloner<offer.price){
+			return new Error("Not enough doubloners");
+		}
+
+		user.removeDoubloner(offer.price);
+
+		//TODO notify user
+		return "Success";
+	}
 }

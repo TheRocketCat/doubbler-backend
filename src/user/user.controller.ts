@@ -1,7 +1,8 @@
-import { Controller,Res,Req,Get,Body,Post } from '@nestjs/common';
+import { Controller,Res,Req,Get,Body,Post,UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 import { UserRep } from './user.repository';
+import { AuthGuard } from '~/auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -14,9 +15,14 @@ export class UserController {
 		this.usersRep.createUser(body.phoneNumber);
 	}
 
-	@Get(":id/doubloner")
+	@UseGuards(AuthGuard)
+	@Get("doubloner")
 	async getDoubloner(@Req() req: Request, @Res() res: Response) {
-		const id = req.params.id;
+		//@ts-ignore
+		const id = req.user.sub;
+		//@ts-ignore
+		console.log("user:", req.user);
+
 		const doubloner = this.usersRep.getDoubloner(id);
 		res.json({doubloner});
 	}

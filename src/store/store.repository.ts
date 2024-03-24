@@ -14,6 +14,10 @@ export class Offer{
 	get name(){
 		return this._name;
 	}
+
+	get price(){
+		return this._doublonerPrice;
+	}
 }
 
 @Injectable()
@@ -27,5 +31,9 @@ export class StoreRepository {
 
 	getOffers(){
 		return this._offers;
+	}
+
+	async getOfferById(id:string){
+		return this._offers.find(offer=>offer.id===id);
 	}
 }

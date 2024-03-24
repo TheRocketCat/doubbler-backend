@@ -25,6 +25,10 @@ export class User{
 		this._doubloner += amount;
 	}
 
+	removeDoubloner(amount:number){
+		this._doubloner -= amount;
+	}
+
 	get doubloner(){
 		return this._doubloner;
 	}
@@ -80,5 +84,9 @@ export class UserRep {
 			return user.username === username && user.password === password &&
 			user.verified;
 		});
+	}
+
+	async getUserById(id:string){
+		return this.users.find(user => user.id === id);
 	}
 }
