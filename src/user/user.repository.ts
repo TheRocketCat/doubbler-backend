@@ -34,7 +34,7 @@ export class User{
 	}
 
 	get phoneNumber(){
-		return this.phoneNumber;
+		return this._phoneNumber;
 	}
 
 	get username(){
@@ -70,12 +70,20 @@ export class UserRep {
 		this.users.push(user);
 	}
 
+	updateUser(user:User){
+		const index = this.users.findIndex(u => u.id === user.id);
+		if(index < 0){
+			throw new Error("User not found");
+		}
+		this.users[index] = user;
+	}
+
 	getDoubloner(id:string){
 		const user = this.users.find(user => user.id === id);
 		return user.doubloner;
 	}
 
-	getUserByPhoner(phone:string):User | undefined{
+	getUserByPhone(phone:string):User | undefined{
 		return this.users.find(user => user.phoneNumber === phone);
 	}
 

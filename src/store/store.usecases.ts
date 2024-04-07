@@ -15,7 +15,7 @@ export class StoreUsecases {
 	) {}
 
 	kwikkPaymentHook(dto: KwikkPaymentHookDTO) {
-		const user=this.userRep.getUserByPhoner(dto.phoneNumber);
+		const user=this.userRep.getUserByPhone(dto.phoneNumber);
 		if(user){
 			user.addDoubloner(dto.amount);
 		}else{
@@ -37,7 +37,6 @@ export class StoreUsecases {
 
 		user.removeDoubloner(offer.price);
 
-		//TODO notify user
-		return "Success";
+		return {success:true, doubloner:user.doubloner};
 	}
 }
