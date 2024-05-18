@@ -12,9 +12,7 @@ export class AuthService {
 	) { }
 
 	async login(body:any){
-		console.log(body);
 		const user = this.usersRep.getUserByLogin(body.username, body.password);
-		console.log(user);
 		if(!user){
 			throw new UnauthorizedException();
 		}
