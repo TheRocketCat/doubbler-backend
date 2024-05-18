@@ -21,6 +21,15 @@ export class StoreController {
 	}
 
 	@UseGuards(AuthGuard)
+	@Get("codes")
+	getMyCodes(@Req() req:Request){
+		//@ts-ignore
+		const userId=req.user.sub;
+
+		return this.storeRep.getUserCodes(userId);
+	}
+
+	@UseGuards(AuthGuard)
 	@Post("buy/:offerId")
 	async buyOffer(@Req() req:Request, @Param("offerId") offerId: string){
 		//@ts-ignore
@@ -31,6 +40,12 @@ export class StoreController {
 			return {error:res.message};
 		}
 		return res;
+	}
+
+	@UseGuards(AuthGuard)
+	@Post("validate-code")
+	async validateCode(@Req() req:Request, @Body() dto: {code:string}){
+
 	}
 
 	@Post("kwikk-payment-hook")

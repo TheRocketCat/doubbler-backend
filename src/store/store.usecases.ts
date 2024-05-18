@@ -36,7 +36,12 @@ export class StoreUsecases {
 		}
 
 		user.removeDoubloner(offer.price);
+		const code=this.storeRep.addCode(userId,offerId,offer.companyId);
 
-		return {success:true, doubloner:user.doubloner};
+		return {success:true, doubloner:user.doubloner,code};
+	}
+
+	async validateCode(code: string) {
+		
 	}
 }
