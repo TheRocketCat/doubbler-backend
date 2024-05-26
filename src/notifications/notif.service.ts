@@ -10,7 +10,8 @@ export class NotifService {
 	//send a one time link
 	sendOneTimeCode(phoneNumber: string) {
 		const code = Math.floor(100000 + Math.random() * 900000);
-		this.oneTimeCode[phoneNumber] = code;
+		this.oneTimeCode[phoneNumber] = String(code);
+		console.log("Code sent to: ", phoneNumber, code);
 	}
 
 	verifyOneTimeCode(phoneNumber: string, code: string) {

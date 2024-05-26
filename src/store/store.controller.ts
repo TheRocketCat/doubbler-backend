@@ -1,4 +1,5 @@
-import { Controller,Get,Post,Body,UseGuards,Param,Req } from '@nestjs/common';
+import { Controller,Get,Post,Body,UseGuards,Param,Req,Res } from '@nestjs/common';
+import { Request,Response } from 'express';
 
 import { StoreRepository } from './store.repository';
 import { StoreUsecases } from './store.usecases';
@@ -32,7 +33,7 @@ export class StoreController {
 	@UseGuards(AuthGuard)
 	@Post("buy/:offerId")
 	async buyOffer(@Req() req:Request, @Param("offerId") offerId: string){
-		//@ts-ignore
+		//@ts-ignore 
 		const userId=req.user.sub;
 
 		const res=await this.storeUC.buyOffer(userId,offerId);
@@ -45,11 +46,15 @@ export class StoreController {
 	@UseGuards(AuthGuard)
 	@Post("validate-code")
 	async validateCode(@Req() req:Request, @Body() dto: {code:string}){
-
+		//@ts-ignore
+		const userId=req.user.sub;
+		this.storeUC.validateCode(userId,dto.code);
 	}
 
 	@Post("kwikk-payment-hook")
-	kwikkPaymentHook(@Body() dto: KwikkPaymentHookDTO){
-		this.storeUC.kwikkPaymentHook(dto);
+	async kwikkPaymentHook(@Body() dto: KwikkPaymentHookDTO){
+		// TODO verify hook signatures, to avoid false payments - talk to kwikk about this
+		const result=this.storeUC.kwikkPaymentHook(dto);
+		return result;
 	}
 }

@@ -10,9 +10,15 @@ export class KwikkPaymentHookDTO {
 	@IsNumber()
 	amount: number;
 
+	/*
 	@IsString()
 	currency: string;
+	*/
 
 	@IsString()
 	phoneNumber: string;
+}
+
+export class KwikkPaymentHookResponseDTO {
+	newUser: boolean;
 }

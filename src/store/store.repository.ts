@@ -24,6 +24,7 @@ export class Offer{
 @Injectable()
 export class StoreRepository {
 	private _offers:Offer[] = [
+		new Offer("0","1", "10% off any clothing", 500),
 		new Offer("1","1", "t-shirt", 300),
 		new Offer("2","2", "20% of a ride", 900),
 		new Offer("3","3", "1 Ticket to Madonna", 50000),
@@ -55,6 +56,7 @@ export class StoreRepository {
 
 	private _codes=[
 		{
+			id:"1",
 			companyId:"1",
 			userId:"1",
 			offerId:"1",
@@ -69,6 +71,7 @@ export class StoreRepository {
 	addCode(userId:string, offerId:string,storeId:string){
 		const codenumber=Math.random().toString(36).substring(7)
 		const code={
+			id:this._codes.length.toString()+1,
 			companyId:storeId,
 			userId,
 			offerId,
@@ -78,8 +81,12 @@ export class StoreRepository {
 		return code
 	}
 
-	getUserCodes(id:string){
-		return this._codes;
+	getUserCodes(id:string):Array<any>{
+		return this._codes.filter(c=>c.userId===id);
+	}
+
+	deleteCode(id:string){
+		this._codes=this._codes.filter(c=>c.id!==id);
 	}
 
 	async getOfferById(id:string){
