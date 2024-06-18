@@ -21,7 +21,7 @@ export class StoreUsecases {
 			user.addDoubloner(dto.amount);
 			return {newUser:false};
 		}else{
-			this.userRep.createUser(dto.phoneNumber, dto.amount);
+			this.userRep.createUnverifiedUser(dto.phoneNumber, dto.amount);
 			// login code
 			this.notifService.sendOneTimeCode(dto.phoneNumber);
 			return {newUser:true};
@@ -45,16 +45,26 @@ export class StoreUsecases {
 		return {success:true, doubloner:user.doubloner,code};
 	}
 
-	async validateCode(userId:string,code: string) {
+	async useCode(userId:string,code: string) {
 		// check if code exists
-		const userCodes=this.storeRep.getUserCodes(userId)
-
-		const userCode=userCodes.find(c=>c.code===code);
+		const userCode=this.storeRep.getUserCodeByCode(userId,code);
 		if(!userCode){
 			return new Error("Code not found");
 		}
 		
 		// delete code
 		this.storeRep.deleteCode(userCode.id);
+	}
+
+	async checkCode(userId:string,code: string) {
+		console.log("checkCode ",userId,code);
+		const userCode=this.storeRep.getUserCodeByCode(userId,code);
+		const codes=this.storeRep.getUserCodes(userId);
+		console.log("userCode",codes);
+
+		if(!userCode){
+			return new Error("Code not found");
+		}
+		return userCode;
 	}
 }

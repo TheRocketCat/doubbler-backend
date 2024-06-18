@@ -13,9 +13,9 @@ export class UserRep {
 		this.users.push(user);
 	}
 
-	createUser(phoneNumber:string, doubloner:number = 0){
+	createUnverifiedUser(phoneNumber:string, doubloner:number = 0){
 		const user = User.createUnverifiedUser(
-			String(this.users.length-1),
+			String(this.users.length+1),
 			phoneNumber,
 			doubloner
 		);

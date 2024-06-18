@@ -85,6 +85,14 @@ export class StoreRepository {
 		return this._codes.filter(c=>c.userId===id);
 	}
 
+	getUserCode(userId:string,codeId:string){
+		return this._codes.find(c=>c.id===codeId && c.userId===userId);
+	}
+
+	getUserCodeByCode(userId:string,code:string){
+		return this._codes.find(c=>c.code===code && c.userId===userId);
+	}
+
 	deleteCode(id:string){
 		this._codes=this._codes.filter(c=>c.id!==id);
 	}

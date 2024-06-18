@@ -19,6 +19,7 @@ export class UserUC{
 			return new Error("wrong code");
 		}
 		const user=await this.usersRep.getUserByPhone(phoneNumber);
+		console.log("USER: ",user)
 		if(!user){
 			return new Error("user not found");
 		}

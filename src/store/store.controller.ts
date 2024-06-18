@@ -1,4 +1,4 @@
-import { Controller,Get,Post,Body,UseGuards,Param,Req,Res } from '@nestjs/common';
+import { HttpCode,Controller, Get,Post,Body,UseGuards,Param,Req,Res } from '@nestjs/common';
 import { Request,Response } from 'express';
 
 import { StoreRepository } from './store.repository';
@@ -35,6 +35,7 @@ export class StoreController {
 	async buyOffer(@Req() req:Request, @Param("offerId") offerId: string){
 		//@ts-ignore 
 		const userId=req.user.sub;
+		console.log(userId)
 
 		const res=await this.storeUC.buyOffer(userId,offerId);
 		if(res instanceof Error){
@@ -43,12 +44,34 @@ export class StoreController {
 		return res;
 	}
 
+	// Used when you want to use the code
+	// probably called by store owner and not user
 	@UseGuards(AuthGuard)
-	@Post("validate-code")
-	async validateCode(@Req() req:Request, @Body() dto: {code:string}){
+	@Post("use-code")
+	async UseCode(@Req() req:Request,@Res() res:Response, @Body() dto: {code:string}){
 		//@ts-ignore
 		const userId=req.user.sub;
-		this.storeUC.validateCode(userId,dto.code);
+		const err=await this.storeUC.useCode(userId,dto.code);
+		if(err instanceof Error){
+			res.status(400).send({error:err.message});
+		}
+		res.status(201).send();
+	}
+
+	// check if code is valid
+	// more used as a middle step for the users to check final price
+	@UseGuards(AuthGuard)
+	@HttpCode(200)
+	@Post("check-code-validity")
+	async checkCode(@Req() req:Request,@Res() res:Response, @Body() dto: {code:string}){
+		//@ts-ignore
+		const userId=req.user.sub;
+		const result=await this.storeUC.checkCode(userId,dto.code);
+		if(result instanceof Error){
+			return res.status(400).send({error:result.message});
+		}
+
+		return res.status(200).send({result});
 	}
 
 	@Post("kwikk-payment-hook")
